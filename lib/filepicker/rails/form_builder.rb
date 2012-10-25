@@ -15,7 +15,7 @@ module Filepicker
 
           'data-fp-option-container' => options[:container],
 
-          'data-fp-option-multiple' => false,
+          'data-fp-option-multiple' => options[:multiple],
 
           'data-fp-option-services' => Array(options[:services]).join(","),
         }

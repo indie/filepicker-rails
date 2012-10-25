@@ -23,8 +23,26 @@ module Filepicker
 
       # Allows options to be passed to filepicker_image_url and then falls back to normal Rails options for image_tag
       # If specifying html width, height, pass it down to filepicker for optimization
-      def filepicker_image_tag(url, options={})
-        image_tag(filepicker_image_url(url, options), options)
+      def filepicker_image_tag(url, options={}, try_multiple)
+        if url.split(',').length > 1 && try_multiple
+          i = 0
+          html = %Q(<div id="myCarousel" class="carousel slide"><div class="carousel-inner">)
+          url.split(',').each do |u|
+            if i == 0
+              my_class = "item active"
+            else
+              my_class = "item"
+            end
+            i += 1
+            html += %Q(<div class="#{my_class}">) + image_tag(filepicker_image_url(u, options), options) + %Q(</div>)
+          end
+          html += %Q(</div><!-- Carousel nav --><a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a><a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a></div>)
+          html.html_safe
+        elsif url.split(',').length > 1 && !try_multiple
+          image_tag(filepicker_image_url(url.split(',')[0], options),options)
+        else
+          image_tag(filepicker_image_url(url, options),options)
+        end
       end
 
       # width - Resize the image to this width.
