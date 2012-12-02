@@ -84,6 +84,8 @@ module Filepicker
       #                 and horizontal with a comma. The default behavior
       #                 is bottom,right
       def filepicker_image_url(url, options = {})
+	if url.nil and url.empty?
+	  url = "https://www.filepicker.io/api/file/uexNK0HwTzaJ3WmsFij4"
         query_params = options.slice(:width, :height, :fit, :align, :crop, :format, :quality, :watermark, :watersize, :waterposition).to_query
         [url, "/convert?", query_params].join
       end
